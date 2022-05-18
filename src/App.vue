@@ -1,5 +1,8 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import Navbar from './components/Navbar.vue';
+</script>
 
 <template>
-  <h1 class="bg-red-400">Hello World</h1>
+  <Navbar />
+  <router-view></router-view>
 </template>
