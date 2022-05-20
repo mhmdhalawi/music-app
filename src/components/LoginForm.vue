@@ -1,6 +1,19 @@
+<script setup lang="ts">
+
+</script>
+
 <template>
   <!-- Login Form -->
   <form>
+    <FormKit
+      label="I have a validation error"
+      type="text"
+      help="I must equal 'foo'"
+      value="bar"
+      validation="required|is:foo"
+      validation-visibility="live"
+      validation-label="Input"
+    />
     <!-- Email -->
     <div class="mb-3">
       <label class="inline-block mb-2">Email</label>
