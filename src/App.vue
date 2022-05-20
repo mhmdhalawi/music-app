@@ -8,3 +8,9 @@ import AuthModal from './components/AuthModal.vue';
   <AuthModal />
   <router-view></router-view>
 </template>
+
+<style lang="postcss">
+.form-input {
+  @apply block w-full py-1.5 px-3 text-gray-800 border border-gray-300 focus:outline-none rounded;
+}
+</style>

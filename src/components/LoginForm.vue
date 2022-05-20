@@ -1,25 +1,36 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { Form, Field, ErrorMessage } from 'vee-validate';
+import { loginSchema } from '../utils/form-schema';
+
+const submit = () => {
+  console.log('submit');
+};
+</script>
 
 <template>
   <!-- Login Form -->
-  <form>
+  <Form @submit="submit" v-slot="{ errors }" :validation-schema="loginSchema">
     <!-- Email -->
     <div class="mb-3">
       <label class="inline-block mb-2">Email</label>
-      <input
-        type="email"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+      <Field
+        name="email"
+        class="form-input"
         placeholder="Enter Email"
+        :class="{ 'border-red-500': errors.email }"
       />
+      <ErrorMessage name="email" class="text-red-500" />
     </div>
     <!-- Password -->
     <div class="mb-3">
       <label class="inline-block mb-2">Password</label>
-      <input
-        type="password"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+      <Field
+        name="password"
+        class="form-input"
         placeholder="Password"
+        :class="{ 'border-red-500': errors.password }"
       />
+      <ErrorMessage name="password" class="text-red-500" />
     </div>
     <button
       type="submit"
@@ -27,5 +38,5 @@
     >
       Submit
     </button>
-  </form>
+  </Form>
 </template>

@@ -9,6 +9,8 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^1.35.3",
+    "@vee-validate/i18n": "^4.5.11",
+    "@vee-validate/rules": "^4.5.11",
     "@vueuse/components": "^8.5.0",
     "@vueuse/core": "^8.5.0",
     "pinia": "^2.0.14",
