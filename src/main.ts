@@ -8,8 +8,8 @@ import App from './App.vue';
 import './index.css';
 
 const app = createApp(App);
-app.use(router);
 app.use(createPinia());
+app.use(router);
 
 rules.forEach((rule) => {
   rule;

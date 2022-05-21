@@ -1,6 +1,9 @@
 <script setup lang="ts">
+import { computed } from '@vue/reactivity';
 import { ref } from 'vue';
 import { useStore } from '../store';
+import { vOnClickOutside } from '@vueuse/components';
+
 import LoginForm from './LoginForm.vue';
 import RegisterForm from './RegisterForm.vue';
 
@@ -8,10 +11,14 @@ const store = useStore();
 
 const tab = ref('LoginForm');
 
-const tabs: { [key: string]: any } = {
-  LoginForm,
-  RegisterForm,
-};
+const activeTab = computed(() => {
+  if (tab.value === 'LoginForm') return LoginForm;
+  else return RegisterForm;
+});
+
+function closeModal() {
+  store.closeAuthModal();
+}
 </script>
 
 <template>
@@ -33,6 +40,7 @@ const tabs: { [key: string]: any } = {
       <span class="hidden sm:inline-block sm:align-middle sm:h-screen">&#8203;</span>
 
       <div
+        v-on-click-outside="closeModal"
         class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
       >
         <!-- Add margin if you want to see some of the overlay behind the modal-->
@@ -75,7 +83,7 @@ const tabs: { [key: string]: any } = {
             </li>
           </ul>
 
-          <component :is="tabs[tab]"></component>
+          <component :is="activeTab"></component>
         </div>
       </div>
     </div>

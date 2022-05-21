@@ -1,49 +1,75 @@
+<script setup lang="ts">
+import { Form, Field, ErrorMessage } from 'vee-validate';
+import { registerSchema } from '../utils/form-schema';
+
+const onSubmit = () => {
+  console.log('submitted');
+};
+</script>
+
 <template>
   <!-- Registration Form -->
-  <form>
+  <Form @submit="onSubmit" v-slot="{ errors, values }" :validation-schema="registerSchema">
     <!-- Name -->
     <div class="mb-3">
       <label class="inline-block mb-2">Name</label>
-      <input
+      <Field
+        name="name"
         type="text"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+        class="form-input"
         placeholder="Enter Name"
+        :class="{ 'border-red-500': errors.name }"
       />
+      <ErrorMessage name="name" class="text-red-500" />
     </div>
     <!-- Email -->
     <div class="mb-3">
       <label class="inline-block mb-2">Email</label>
-      <input
+      <Field
+        name="email"
         type="email"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+        class="form-input"
         placeholder="Enter Email"
+        :class="{ 'border-red-500': errors.email }"
       />
+      <ErrorMessage name="email" class="text-red-500" />
     </div>
     <!-- Age -->
     <div class="mb-3">
       <label class="inline-block mb-2">Age</label>
-      <input
+      <Field
+        name="age"
         type="number"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+        class="form-input"
+        placeholder="Enter Age"
+        :class="{ 'border-red-500': errors.age }"
       />
+      <ErrorMessage name="age" class="text-red-500" />
     </div>
     <!-- Password -->
     <div class="mb-3">
       <label class="inline-block mb-2">Password</label>
-      <input
+      <Field
+        name="password"
         type="password"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+        class="form-input"
         placeholder="Password"
+        :class="{ 'border-red-500': errors.password }"
       />
+      <ErrorMessage name="password" class="text-red-500" />
     </div>
     <!-- Confirm Password -->
     <div class="mb-3">
       <label class="inline-block mb-2">Confirm Password</label>
-      <input
+      <Field
+        name="password_confirm"
         type="password"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+        class="form-input"
         placeholder="Confirm Password"
+        :class="{ 'border-red-500': errors.password_confirm }"
       />
+
+      <ErrorMessage name="password_confirm" class="text-red-500" />
     </div>
     <!-- Country -->
     <div class="mb-3">
@@ -67,5 +93,5 @@
     >
       Submit
     </button>
-  </form>
+  </Form>
 </template>

@@ -1,20 +1,22 @@
 <script setup lang="ts">
-import { Form, Field, ErrorMessage } from 'vee-validate';
+import { Form, Field, ErrorMessage, useForm } from 'vee-validate';
 import { loginSchema } from '../utils/form-schema';
+import { ILogin } from '../types/forms';
 
-const submit = () => {
-  console.log('submit');
+const onSubmit = (values: Partial<ILogin>) => {
+  console.log(values);
 };
 </script>
 
 <template>
   <!-- Login Form -->
-  <Form @submit="submit" v-slot="{ errors }" :validation-schema="loginSchema">
+  <Form @submit="onSubmit" v-slot="{ errors }" :validation-schema="loginSchema">
     <!-- Email -->
     <div class="mb-3">
       <label class="inline-block mb-2">Email</label>
       <Field
         name="email"
+        type="email"
         class="form-input"
         placeholder="Enter Email"
         :class="{ 'border-red-500': errors.email }"
@@ -26,6 +28,7 @@ const submit = () => {
       <label class="inline-block mb-2">Password</label>
       <Field
         name="password"
+        type="password"
         class="form-input"
         placeholder="Password"
         :class="{ 'border-red-500': errors.password }"

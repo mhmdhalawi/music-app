@@ -14,5 +14,8 @@ export const useStore = defineStore('store', {
     toggleAuthModal() {
       this.authModalShow = !this.authModalShow;
     },
+    closeAuthModal() {
+      this.authModalShow = false;
+    },
   },
 });
