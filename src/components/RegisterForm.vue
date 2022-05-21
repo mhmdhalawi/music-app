@@ -1,11 +1,12 @@
 <script setup lang="ts">
-import { Form, Field, ErrorMessage } from 'vee-validate';
+import { Field, ErrorMessage, useForm } from 'vee-validate';
 import { registerSchema } from '../utils/form-schema';
 import { IRegister } from '../types/forms';
 import { reactive } from 'vue';
+import Alert from '../components/Alert.vue';
 import { IAlert } from '../types/reactive';
 
-import Alert from '../components/Alert.vue';
+const { handleSubmit, errors } = useForm<IRegister>({ validationSchema: registerSchema });
 
 const alert = reactive<IAlert>({
   show: false,
@@ -14,18 +15,16 @@ const alert = reactive<IAlert>({
   bgColor: 'bg-blue-400',
 });
 
-const onSubmit = (values: Partial<IRegister>) => {
+const onSubmit = handleSubmit((values) => {
   alert.inSubmission = true;
   alert.show = true;
   alert.bgColor = 'bg-blue-400';
-
   setTimeout(() => {
     alert.show = false;
     alert.inSubmission = false;
-  }, 3000);
-
-  console.log(values);
-};
+  }, 2000);
+  console.log('submit', values);
+});
 </script>
 
 <template>
@@ -33,7 +32,7 @@ const onSubmit = (values: Partial<IRegister>) => {
     {{ alert.message }}
   </Alert>
   <!-- Registration Form -->
-  <Form @submit="onSubmit" v-slot="{ errors, values }" :validation-schema="registerSchema">
+  <form @submit="onSubmit">
     <!-- Name -->
     <div class="mb-3">
       <label class="inline-block mb-2">Name</label>
@@ -122,14 +121,14 @@ const onSubmit = (values: Partial<IRegister>) => {
       />
       <label class="inline-block">Accept terms of service</label>
     </div>
-    <ErrorMessage name="tos" class="text-red-500 block mb-4" />
+    <ErrorMessage name="tos" class="text-red-500 block" />
     <button
       type="submit"
       :disabled="alert.inSubmission"
       :class="{ 'opacity-50': alert.inSubmission }"
-      class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
+      class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700 mt-4"
     >
       Submit
     </button>
-  </Form>
+  </form>
 </template>

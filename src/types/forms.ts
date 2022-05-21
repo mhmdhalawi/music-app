@@ -8,4 +8,5 @@ export interface IRegister extends ILogin {
   age: number;
   country: string;
   tos: boolean;
+  password_confirm: string;
 }
