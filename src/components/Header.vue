@@ -22,7 +22,12 @@ onMounted(() => {
   <header id="header" class="bg-gray-700">
     <nav class="container mx-auto flex justify-start items-center py-5 px-4">
       <!-- App Name -->
-      <router-link to="/" class="text-white font-bold uppercase text-2xl mr-4">Music</router-link>
+      <router-link
+        to="/"
+        class="text-white font-bold uppercase text-2xl mr-4"
+        exact-active-class="no-active"
+        >Music</router-link
+      >
 
       <div class="flex flex-grow items-center">
         <!-- Primary Navigation -->
@@ -34,7 +39,7 @@ onMounted(() => {
             >
           </li>
           <li v-if="store.user?.aud === 'authenticated'">
-            <router-link to="/manage" class="px-2 text-white">Manage</router-link>
+            <router-link :to="{ name: 'manage' }" class="px-2 text-white">Manage</router-link>
           </li>
           <li class="ml-auto" v-if="store.user?.aud === 'authenticated'">
             <a class="px-2 text-white" href="#" @click.prevent="handleLogout">Logout</a>
