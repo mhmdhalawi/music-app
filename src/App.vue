@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import Header from './components/Header.vue';
 import AuthModal from './components/AuthModal.vue';
+import Footer from './views/Footer.vue';
 </script>
 
 <template>
   <Header />
   <AuthModal />
   <router-view></router-view>
+  <Footer />
 </template>
 
 <style lang="postcss">
