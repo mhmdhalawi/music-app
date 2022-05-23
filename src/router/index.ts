@@ -1,3 +1,4 @@
+import nProgress from 'nprogress';
 import { createRouter, createWebHistory } from 'vue-router';
 import { supabase } from '../lib/supabase';
 import Homapage from '../views/Homepage.vue';
