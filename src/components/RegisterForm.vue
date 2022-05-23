@@ -3,10 +3,12 @@ import { Field, ErrorMessage, useForm } from 'vee-validate';
 import { registerSchema } from '../utils/form-schema';
 import { IRegister } from '../types/forms';
 import { reactive } from 'vue';
-import Alert from '../components/Alert.vue';
 import { IAlert } from '../types/reactive';
 import { supabase } from '../lib/supabase';
 import { useStore } from '../store';
+
+import Alert from '../components/Alert.vue';
+import SubmitButton from './SubmitButton.vue';
 
 const store = useStore();
 
@@ -23,6 +25,7 @@ const alert = reactive<IAlert>({
 const onSubmit = handleSubmit(async (values) => {
   alert.show = true;
   alert.bgColor = 'bg-blue-400';
+  alert.message = 'Please wait while we register you...';
   const { user, error } = await supabase.auth.signUp(
     {
       email: values.email,
@@ -37,27 +40,27 @@ const onSubmit = handleSubmit(async (values) => {
     }
   );
   if (!error) {
+    store.closeAuthModal();
     alert.message = 'You have been registered successfully!';
     alert.bgColor = 'bg-green-400';
+    store.setUser(user);
   } else {
     alert.message = error.message;
     alert.bgColor = 'bg-red-400';
   }
   setTimeout(() => {
     alert.show = false;
-    if (user) {
-      store.setUser(user);
-      store.closeAuthModal();
-    }
-  }, 700);
+  }, 1000);
   console.log('user', user);
 });
 </script>
 
 <template>
-  <Alert :bgColor="alert.bgColor" :show="alert.show">
-    {{ alert.message }}
-  </Alert>
+  <Teleport to="#alert">
+    <Alert :bgColor="alert.bgColor" :show="alert.show">
+      {{ alert.message }}
+    </Alert>
+  </Teleport>
   <!-- Registration Form -->
   <form @submit="onSubmit">
     <!-- Name -->
@@ -149,13 +152,7 @@ const onSubmit = handleSubmit(async (values) => {
       <label class="inline-block">Accept terms of service</label>
     </div>
     <ErrorMessage name="tos" class="text-red-500 block" />
-    <button
-      type="submit"
-      :disabled="isSubmitting"
-      :class="{ 'opacity-50': isSubmitting }"
-      class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700 mt-4"
-    >
-      Submit
-    </button>
+    <!-- button -->
+    <SubmitButton :disabled="isSubmitting">Submit</SubmitButton>
   </form>
 </template>

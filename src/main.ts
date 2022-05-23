@@ -4,8 +4,13 @@ import { router } from './router';
 
 import { rules } from './utils/form-validate';
 
+import { progress } from './lib/nprogress';
+import 'nprogress/nprogress.css';
+
 import App from './App.vue';
 import './index.css';
+
+progress(router);
 
 const app = createApp(App);
 app.use(createPinia());
