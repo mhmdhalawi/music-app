@@ -5,25 +5,52 @@ import { IRegister } from '../types/forms';
 import { reactive } from 'vue';
 import Alert from '../components/Alert.vue';
 import { IAlert } from '../types/reactive';
+import { supabase } from '../lib/supabase';
+import { useStore } from '../store';
 
-const { handleSubmit, errors } = useForm<IRegister>({ validationSchema: registerSchema });
+const store = useStore();
+
+const { handleSubmit, errors, isSubmitting } = useForm<IRegister>({
+  validationSchema: registerSchema,
+});
 
 const alert = reactive<IAlert>({
   show: false,
-  inSubmission: false,
   message: 'Please wait while we register you...',
   bgColor: 'bg-blue-400',
 });
 
-const onSubmit = handleSubmit((values) => {
-  alert.inSubmission = true;
+const onSubmit = handleSubmit(async (values) => {
   alert.show = true;
   alert.bgColor = 'bg-blue-400';
+  const { user, error } = await supabase.auth.signUp(
+    {
+      email: values.email,
+      password: values.password,
+    },
+    {
+      data: {
+        name: values.name,
+        age: values.age,
+        country: values.country,
+      },
+    }
+  );
+  if (!error) {
+    alert.message = 'You have been registered successfully!';
+    alert.bgColor = 'bg-green-400';
+  } else {
+    alert.message = error.message;
+    alert.bgColor = 'bg-red-400';
+  }
   setTimeout(() => {
     alert.show = false;
-    alert.inSubmission = false;
-  }, 2000);
-  console.log('submit', values);
+    if (user) {
+      store.setUser(user);
+      store.closeAuthModal();
+    }
+  }, 700);
+  console.log('user', user);
 });
 </script>
 
@@ -124,8 +151,8 @@ const onSubmit = handleSubmit((values) => {
     <ErrorMessage name="tos" class="text-red-500 block" />
     <button
       type="submit"
-      :disabled="alert.inSubmission"
-      :class="{ 'opacity-50': alert.inSubmission }"
+      :disabled="isSubmitting"
+      :class="{ 'opacity-50': isSubmitting }"
       class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700 mt-4"
     >
       Submit

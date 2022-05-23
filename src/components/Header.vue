@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { supabase } from '../lib/supabase';
 import { useStore } from '../store';
+
 const store = useStore();
+
+const handleLogout = async () => {
+  store.setUser(null);
+  await supabase.auth.signOut();
+};
 </script>
 
 <template>
@@ -12,15 +19,18 @@ const store = useStore();
 
       <div class="flex flex-grow items-center">
         <!-- Primary Navigation -->
-        <ul class="flex flex-row mt-1">
+        <ul class="flex flex-row mt-1 w-full">
           <!-- Navigation Links -->
-          <li>
+          <li v-if="!(store.user?.aud === 'authenticated')">
             <a class="px-2 text-white" href="#" @click.prevent="store.toggleAuthModal"
               >Login / Register</a
             >
           </li>
           <li>
             <a class="px-2 text-white" href="#">Manage</a>
+          </li>
+          <li class="ml-auto" v-if="store.user?.aud === 'authenticated'">
+            <a class="px-2 text-white" href="#" @click.prevent="handleLogout">Logout</a>
           </li>
         </ul>
       </div>
