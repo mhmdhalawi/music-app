@@ -11,6 +11,11 @@ export const useStore = defineStore('store', {
     authModalShow: false,
     user: currentUser,
     filesData: [] as ISong[],
+    toast: {
+      show: false,
+      message: '',
+      bgColor: '',
+    },
   }),
   // actions
   actions: {
@@ -25,6 +30,15 @@ export const useStore = defineStore('store', {
     },
     setFilesData(filesData: ISong[]) {
       this.filesData.push(...filesData);
+    },
+    toggleToast(message: string, bgColor: 'green' | 'red') {
+      this.toast.message = message;
+      this.toast.bgColor = `bg-${bgColor}-400`;
+      this.toast.show = true;
+
+      setTimeout(() => {
+        this.toast.show = false;
+      }, 2000);
     },
   },
 });

@@ -2,53 +2,31 @@
 import { Field, ErrorMessage, useForm } from 'vee-validate';
 import { loginSchema } from '../utils/form-schema';
 import { ILogin } from '../types/forms';
-import { reactive } from 'vue';
-import { IAlert } from '../types/reactive';
 import { supabase } from '../lib/supabase';
 import { useStore } from '../store';
 
-import Alert from '../components/Alert.vue';
 import SubmitButton from './SubmitButton.vue';
-import { computed } from '@vue/reactivity';
 
 const store = useStore();
 
 const { handleSubmit, errors, isSubmitting } = useForm<ILogin>({ validationSchema: loginSchema });
 
-const alert = reactive<IAlert>({
-  show: false,
-  message: 'Please wait while we log you in...',
-  bgColor: 'bg-blue-400',
-});
-
 const onSubmit = handleSubmit(async (values) => {
-  alert.show = true;
-  alert.bgColor = 'bg-blue-400';
-  alert.message = 'Please wait while we log you in...';
   const { user, error } = await supabase.auth.signIn({
     email: values.email,
     password: values.password,
   });
   if (!error) {
     store.closeAuthModal();
-    alert.message = 'You have been logged in successfully!';
-    alert.bgColor = 'bg-green-400';
+    store.toggleToast('You have been logged in successfully!', 'green');
     store.setUser(user);
   } else {
-    alert.message = error.message;
-    alert.bgColor = 'bg-red-400';
+    store.toggleToast(error.message, 'red');
   }
-  setTimeout(() => {
-    alert.show = false;
-  }, 1000);
-  console.log('user', user);
 });
 </script>
 
 <template>
-  <Alert :bgColor="alert.bgColor" :show="alert.show">
-    {{ alert.message }}
-  </Alert>
   <!-- Login Form -->
   <form @submit="onSubmit">
     <!-- Email -->

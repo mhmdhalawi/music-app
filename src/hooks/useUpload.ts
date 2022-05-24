@@ -1,18 +1,12 @@
 import { useStore } from '../store';
 import { supabase } from '../lib/supabase';
-import { reactive, ref } from 'vue';
-import { IAlert } from '../types/reactive';
+import { ref } from 'vue';
 
 export const useUpload = () => {
   const store = useStore();
   const userID = store.user?.id;
   const is_dragover = ref(false);
 
-  const alert = reactive<IAlert>({
-    show: false,
-    message: 'Uploaded successfully',
-    bgColor: 'bg-green-400',
-  });
   const showProgressBar = ref(false);
   const progress = ref(0);
   const incrementBy = ref(0);
@@ -44,10 +38,9 @@ export const useUpload = () => {
     setTimeout(() => {
       showProgressBar.value = false;
       progress.value = 0;
-      alert.show = true;
+      store.toggleToast('Uploaded successfully!', 'green');
     }, 800);
-    setTimeout(() => (alert.show = false), 2000);
   };
 
-  return { filesData: store.filesData, upload, is_dragover, showProgressBar, progress, alert };
+  return { filesData: store.filesData, upload, is_dragover, showProgressBar, progress };
 };

@@ -2,9 +2,11 @@
 import Header from './components/Header.vue';
 import AuthModal from './components/AuthModal.vue';
 import Footer from './views/Footer.vue';
+import Toast from './components/Toast.vue';
 </script>
 
 <template>
+  <Toast />
   <Header />
   <AuthModal />
   <router-view v-slot="{ Component, route }">

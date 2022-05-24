@@ -1,19 +1,17 @@
 <script setup lang="ts">
-const props = defineProps<{
-  show: boolean;
-  bgColor: string;
-}>();
+import { useStore } from '../store';
+const store = useStore();
 </script>
 
 <template>
   <Teleport to="#alert">
     <transition name="fade">
       <div
-        :class="props.bgColor"
+        v-show="store.toast.show"
+        :class="store.toast.bgColor"
         class="text-white text-center font-bold p-5 mb-4 absolute top-5 right-5 rounded-md z-20"
-        v-show="props.show"
       >
-        <slot></slot>
+        <p>{{ store.toast.message }}</p>
       </div>
     </transition>
   </Teleport>

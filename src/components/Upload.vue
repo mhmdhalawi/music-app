@@ -1,13 +1,11 @@
 <script setup lang="ts">
 import { useUpload } from '../hooks/useUpload';
-import Alert from '../components/Alert.vue';
 
-const { filesData, upload, is_dragover, showProgressBar, progress, alert } = useUpload();
+const { filesData, upload, is_dragover, showProgressBar, progress } = useUpload();
 
 console.log('file data', filesData);
 </script>
 <template>
-  <Alert :bg-color="alert.bgColor" :show="alert.show">{{ alert.message }}</Alert>
   <div class="col-span-1">
     <div class="bg-white rounded border border-gray-200 relative flex flex-col">
       <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
