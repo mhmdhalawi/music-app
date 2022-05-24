@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { useUpload } from '../hooks/useUpload';
+import Alert from '../components/Alert.vue';
 
-const { filesData, upload, is_dragover } = useUpload();
+const { filesData, upload, is_dragover, showProgressBar, progress, alert } = useUpload();
 
 console.log('file data', filesData);
 </script>
 <template>
+  <Alert :bg-color="alert.bgColor" :show="alert.show">{{ alert.message }}</Alert>
   <div class="col-span-1">
     <div class="bg-white rounded border border-gray-200 relative flex flex-col">
       <div class="px-6 pt-6 pb-5 font-bold border-b border-gray-200">
@@ -30,26 +32,17 @@ console.log('file data', filesData);
         >
           <h5>Drop your files here</h5>
         </div>
-        <hr class="my-6" />
+        <hr class="my-6" v-show="showProgressBar" />
         <!-- Progess Bars -->
-        <div class="mb-4">
+        <div class="mb-4" v-show="showProgressBar">
           <!-- File Name -->
-          <div class="font-bold text-sm">Just another song.mp3</div>
+          <div class="font-bold text-sm mb-4">Uploading songs</div>
           <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
             <!-- Inner Progress Bar -->
-            <div class="transition-all progress-bar bg-blue-400" style="width: 75%"></div>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="font-bold text-sm">Just another song.mp3</div>
-          <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-            <div class="transition-all progress-bar bg-blue-400" style="width: 35%"></div>
-          </div>
-        </div>
-        <div class="mb-4">
-          <div class="font-bold text-sm">Just another song.mp3</div>
-          <div class="flex h-4 overflow-hidden bg-gray-200 rounded">
-            <div class="transition-all progress-bar bg-blue-400" style="width: 55%"></div>
+            <div
+              class="transition-all progress-bar bg-blue-400"
+              :style="{ width: `${progress}%` }"
+            ></div>
           </div>
         </div>
       </div>

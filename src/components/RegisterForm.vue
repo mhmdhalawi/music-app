@@ -56,11 +56,9 @@ const onSubmit = handleSubmit(async (values) => {
 </script>
 
 <template>
-  <Teleport to="#alert">
-    <Alert :bgColor="alert.bgColor" :show="alert.show">
-      {{ alert.message }}
-    </Alert>
-  </Teleport>
+  <Alert :bgColor="alert.bgColor" :show="alert.show">
+    {{ alert.message }}
+  </Alert>
   <!-- Registration Form -->
   <form @submit="onSubmit">
     <!-- Name -->

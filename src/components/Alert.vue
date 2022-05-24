@@ -6,15 +6,17 @@ const props = defineProps<{
 </script>
 
 <template>
-  <transition name="fade">
-    <div
-      :class="props.bgColor"
-      class="text-white text-center font-bold p-5 mb-4 absolute top-5 right-5 rounded-md z-20"
-      v-show="props.show"
-    >
-      <slot></slot>
-    </div>
-  </transition>
+  <Teleport to="#alert">
+    <transition name="fade">
+      <div
+        :class="props.bgColor"
+        class="text-white text-center font-bold p-5 mb-4 absolute top-5 right-5 rounded-md z-20"
+        v-show="props.show"
+      >
+        <slot></slot>
+      </div>
+    </transition>
+  </Teleport>
 </template>
 
 <style>
