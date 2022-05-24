@@ -12,9 +12,6 @@ const handleLogout = async () => {
   store.setUser(null);
   router.push('/');
 };
-onMounted(() => {
-  store.setUser(supabase.auth.user());
-});
 </script>
 
 <template>

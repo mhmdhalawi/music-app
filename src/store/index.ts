@@ -1,16 +1,17 @@
 import { User } from '@supabase/supabase-js';
 import { defineStore } from 'pinia';
+import { ISong } from '../types/tables';
+import { supabase } from '../lib/supabase';
+
+const currentUser = supabase.auth.user();
 
 export const useStore = defineStore('store', {
   // initial state
   state: () => ({
     authModalShow: false,
-    user: {} as User | null,
+    user: currentUser,
+    filesData: [] as ISong[],
   }),
-  //getters
-  //   getters: {
-  //     getAuthModalShow: (state) => state.authModalShow,
-  //   },
   // actions
   actions: {
     toggleAuthModal() {
@@ -21,6 +22,9 @@ export const useStore = defineStore('store', {
     },
     setUser(user: User | null) {
       this.user = user;
+    },
+    setFilesData(filesData: ISong[]) {
+      this.filesData.push(...filesData);
     },
   },
 });
