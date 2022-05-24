@@ -4,11 +4,12 @@ import { loginSchema } from '../utils/form-schema';
 import { ILogin } from '../types/forms';
 import { reactive } from 'vue';
 import { IAlert } from '../types/reactive';
-
-import Alert from '../components/Alert.vue';
-
 import { supabase } from '../lib/supabase';
 import { useStore } from '../store';
+
+import Alert from '../components/Alert.vue';
+import SubmitButton from './SubmitButton.vue';
+import { computed } from '@vue/reactivity';
 
 const store = useStore();
 
@@ -23,32 +24,33 @@ const alert = reactive<IAlert>({
 const onSubmit = handleSubmit(async (values) => {
   alert.show = true;
   alert.bgColor = 'bg-blue-400';
+  alert.message = 'Please wait while we log you in...';
   const { user, error } = await supabase.auth.signIn({
     email: values.email,
     password: values.password,
   });
   if (!error) {
+    store.closeAuthModal();
     alert.message = 'You have been logged in successfully!';
     alert.bgColor = 'bg-green-400';
+    store.setUser(user);
   } else {
     alert.message = error.message;
     alert.bgColor = 'bg-red-400';
   }
   setTimeout(() => {
     alert.show = false;
-    if (user) {
-      store.setUser(user);
-      store.closeAuthModal();
-    }
-  }, 700);
+  }, 1000);
   console.log('user', user);
 });
 </script>
 
 <template>
-  <Alert :bgColor="alert.bgColor" :show="alert.show">
-    {{ alert.message }}
-  </Alert>
+  <Teleport to="#alert">
+    <Alert :bgColor="alert.bgColor" :show="alert.show">
+      {{ alert.message }}
+    </Alert>
+  </Teleport>
   <!-- Login Form -->
   <form @submit="onSubmit">
     <!-- Email -->
@@ -75,13 +77,7 @@ const onSubmit = handleSubmit(async (values) => {
       />
       <ErrorMessage name="password" class="text-red-500" />
     </div>
-    <button
-      type="submit"
-      :disabled="isSubmitting"
-      :class="{ 'opacity-50': isSubmitting }"
-      class="block w-full bg-purple-600 text-white py-1.5 px-3 rounded transition hover:bg-purple-700"
-    >
-      Submit
-    </button>
+    <!-- button -->
+    <SubmitButton :disabled="isSubmitting">Submit</SubmitButton>
   </form>
 </template>
