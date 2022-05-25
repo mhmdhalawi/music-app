@@ -3,6 +3,7 @@ import { createPinia } from 'pinia';
 import { router } from './router';
 
 import { rules } from './utils/form-validate';
+import { VueQueryPlugin } from 'vue-query';
 
 import { progress } from './lib/nprogress';
 import 'nprogress/nprogress.css';
@@ -15,6 +16,7 @@ progress(router);
 const app = createApp(App);
 app.use(createPinia());
 app.use(router);
+app.use(VueQueryPlugin);
 
 rules.forEach((rule) => {
   rule;

@@ -1,9 +1,12 @@
 <script setup lang="ts">
-import { ref } from 'vue';
+import { toRaw, ref, watch } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import Upload from '../components/Upload.vue';
-
+import { useGetRequest } from '../hooks/useGetRequest';
+import { useStore } from '../store';
+const store = useStore();
 const uploadRefParent = ref();
+const id = store.user?.id || '';
 
 onBeforeRouteLeave((_to, _from, next) => {
   if (uploadRefParent.value) {
@@ -11,6 +14,10 @@ onBeforeRouteLeave((_to, _from, next) => {
   }
   next();
 });
+
+const { data } = useGetRequest(id);
+
+watch(data, () => console.log('result', toRaw(data.value?.data)));
 </script>
 <template>
   <main>
@@ -64,42 +71,13 @@ onBeforeRouteLeave((_to, _from, next) => {
                   </form>
                 </div>
               </div>
-              <div class="border border-gray-200 p-3 mb-4 rounded">
+              <div
+                class="border border-gray-200 p-3 mb-4 rounded"
+                v-for="song in data?.data"
+                :key="song.id"
+              >
                 <div>
-                  <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                  <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right">
-                    <i class="fa fa-times"></i>
-                  </button>
-                  <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right">
-                    <i class="fa fa-pencil-alt"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="border border-gray-200 p-3 mb-4 rounded">
-                <div>
-                  <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                  <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right">
-                    <i class="fa fa-times"></i>
-                  </button>
-                  <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right">
-                    <i class="fa fa-pencil-alt"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="border border-gray-200 p-3 mb-4 rounded">
-                <div>
-                  <h4 class="inline-block text-2xl font-bold">Song Name</h4>
-                  <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right">
-                    <i class="fa fa-times"></i>
-                  </button>
-                  <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-blue-600 float-right">
-                    <i class="fa fa-pencil-alt"></i>
-                  </button>
-                </div>
-              </div>
-              <div class="border border-gray-200 p-3 mb-4 rounded">
-                <div>
-                  <h4 class="inline-block text-2xl font-bold">Song Name</h4>
+                  <h4 class="inline-block text-2xl font-bold">{{ song.song_name }}</h4>
                   <button class="ml-1 py-1 px-2 text-sm rounded text-white bg-red-600 float-right">
                     <i class="fa fa-times"></i>
                   </button>
