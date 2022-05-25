@@ -25,14 +25,16 @@ export const useUpload = () => {
         .from('songs')
         .insert([{ song_name: file.name, user_id: userID }]);
       if (data) {
-        await supabase.storage.from('songs').upload(`${userID}/${data[0].id}-${file.name}`, file);
+        const { data: songData } = await supabase.storage
+          .from('songs')
+          .upload(`${userID}/${data[0].id}-${file.name}`, file);
         if (progress.value + incrementBy.value >= 100) {
           progress.value = 100;
         } else {
           progress.value += incrementBy.value;
         }
 
-        store.setFilesData(data);
+        store.setSongsData({ ...data, ...songData });
       }
     }
     setTimeout(() => {
@@ -42,5 +44,5 @@ export const useUpload = () => {
     }, 800);
   };
 
-  return { filesData: store.filesData, upload, is_dragover, showProgressBar, progress };
+  return { songs: store.songs, upload, is_dragover, showProgressBar, progress };
 };

@@ -1,9 +1,19 @@
 <script setup lang="ts">
 import { useUpload } from '../hooks/useUpload';
+import { supabase } from '../lib/supabase';
 
-const { filesData, upload, is_dragover, showProgressBar, progress } = useUpload();
+const { songs, upload, is_dragover, showProgressBar, progress } = useUpload();
+console.log('songs', songs);
 
-console.log('file data', filesData);
+const abortSignal = () => {
+  const ac = new AbortController();
+  supabase.from('songs').select().abortSignal(ac.signal).then(console.log);
+  ac.abort();
+};
+
+defineExpose({
+  abortSignal,
+});
 </script>
 <template>
   <div class="col-span-1">

@@ -10,7 +10,7 @@ export const useStore = defineStore('store', {
   state: () => ({
     authModalShow: false,
     user: currentUser,
-    filesData: [] as ISong[],
+    songs: [] as ISong[],
     toast: {
       show: false,
       message: '',
@@ -28,8 +28,8 @@ export const useStore = defineStore('store', {
     setUser(user: User | null) {
       this.user = user;
     },
-    setFilesData(filesData: ISong[]) {
-      this.filesData.push(...filesData);
+    setSongsData(song: ISong[]) {
+      this.songs.push(...song);
     },
     toggleToast(message: string, bgColor: 'green' | 'red') {
       this.toast.message = message;
