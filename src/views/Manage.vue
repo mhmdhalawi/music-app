@@ -3,10 +3,13 @@ import { toRaw, ref, watch } from 'vue';
 import { onBeforeRouteLeave } from 'vue-router';
 import Upload from '../components/Upload.vue';
 import { useGetRequest } from '../hooks/useGetRequest';
+import { getSongsByID } from '../utils/supabase';
 import { useStore } from '../store';
+import { QueryKeys } from '../utils/query-keys';
 const store = useStore();
 const uploadRefParent = ref();
 const id = store.user?.id || '';
+const key = QueryKeys.fetch_songs;
 
 onBeforeRouteLeave((_to, _from, next) => {
   if (uploadRefParent.value) {
@@ -14,10 +17,10 @@ onBeforeRouteLeave((_to, _from, next) => {
   }
   next();
 });
+// supabase returns an object {data,error} for each query
+const { data: supabaseData } = useGetRequest({ fn: getSongsByID, id, key });
 
-const { data } = useGetRequest(id);
-
-watch(data, () => console.log('result', toRaw(data.value?.data)));
+watch(supabaseData, () => console.log('error', toRaw(supabaseData.value?.error)));
 </script>
 <template>
   <main>
@@ -73,7 +76,7 @@ watch(data, () => console.log('result', toRaw(data.value?.data)));
               </div>
               <div
                 class="border border-gray-200 p-3 mb-4 rounded"
-                v-for="song in data?.data"
+                v-for="song in supabaseData?.data"
                 :key="song.id"
               >
                 <div>

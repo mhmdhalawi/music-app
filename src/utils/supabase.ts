@@ -2,6 +2,7 @@
 
 import { supabase } from '../lib/supabase';
 
-export function getSongsByID(id: string) {
-  return supabase.from('songs').select('*').eq('user_id', id);
+export async function getSongsByID(id?: string) {
+  const { data, error } = await supabase.from('songs').select('*').eq('user_id', id);
+  return { data, error };
 }
