@@ -3,7 +3,6 @@ import { useUpload } from '../hooks/useUpload';
 import { supabase } from '../lib/supabase';
 
 const { songs, upload, is_dragover, showProgressBar, progress } = useUpload();
-console.log('songs', songs);
 
 const abortSignal = () => {
   const ac = new AbortController();

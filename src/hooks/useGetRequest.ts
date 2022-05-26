@@ -4,7 +4,7 @@ import { QueryKeys } from '../utils/query-keys';
 interface IRequest<T> {
   fn(id?: string): Promise<T>;
   id?: string;
-  key: QueryKeys;
+  key: string;
 }
 
 export function useGetRequest<T>({ fn, id, key }: IRequest<T>) {

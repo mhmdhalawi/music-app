@@ -3,7 +3,7 @@ import { createPinia } from 'pinia';
 import { router } from './router';
 
 import { rules } from './utils/form-validate';
-import { VueQueryPlugin } from 'vue-query';
+import { VueQueryPlugin, QueryClient } from 'vue-query';
 
 import { progress } from './lib/nprogress';
 import 'nprogress/nprogress.css';

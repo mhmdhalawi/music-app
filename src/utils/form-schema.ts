@@ -12,3 +12,8 @@ export const registerSchema = {
   country: 'required',
   tos: 'required',
 };
+
+export const editSongSchema = {
+  song_name: 'required|alpha_spaces|min:3',
+  genre: 'required|alpha_spaces|min:3',
+};

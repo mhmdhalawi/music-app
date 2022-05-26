@@ -10,3 +10,8 @@ export interface IRegister extends ILogin {
   tos: boolean;
   password_confirm: string;
 }
+
+export interface IEditSong {
+  song_name: string;
+  genre: string;
+}
